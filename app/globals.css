@@ -87,6 +87,23 @@ button[type="submit"]:hover {
   background-color: #402b0a; /* Une nuance légèrement plus foncée pour le hover */
 }
 
+/* button logout */
+
+.logout-button {
+  background-color: #56370c;
+  color: #fff;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 16px;
+  transition: background-color 0.3s ease;
+}
+
+.logout-button:hover {
+  background-color: #70491d; /* Couleur légèrement plus claire au survol */
+}
+
 /* Masquer la section de l'image sur les petits écrans */
 @media (max-width: 768px) {
   .left-section {

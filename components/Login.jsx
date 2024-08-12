@@ -1,35 +1,61 @@
-import React from 'react'; 
-import Image from 'next/image';
+'use client'
+import React,{useState,useEffect} from 'react'; 
+import { useRouter , useSearchParams} from 'next/navigation';
+import { toast } from 'react-toastify'
+import { signIn } from 'next-auth/react'
+
+
 const LoginForm = () => {
+    const [email, setEmail] = useState('');
+    const [password, setPassword] = useState('');
+    const router = useRouter();
+    const searchParams = useSearchParams();
+
+    useEffect(() => {
+        const message = searchParams.get('message');
+        if (message === 'signed-out') {
+            toast.info('Vous êtes déconnecté');
+            router.replace('/');
+        }
+    }, [searchParams, router]);
+    const handleSubmit = async (e) => {
+        e.preventDefault();
+        if (!email || !password) {
+            toast.error("Veuillez renseigner tous les champs");
+            return;
+        }
+        try {
+            const response = await signIn("credentials", {
+                email,
+                password,
+                redirect: false,
+            });
+
+            if (!response.ok) {
+                toast.error('Email ou mot de passe incorrect.');
+                return;
+            }
+            toast.info('Vous êtes connecté!');
+            router.push('/dashboard');
+        } catch (error) {
+            console.log('error:', error);
+            toast.error('Échec de la connexion. Veuillez réessayer.');
+        }
+    }
   return (
-    <div className="login-container">
-      <div className="login-box">
-        <div className="left-section">
-          <Image 
-          src="/loginform.jpg" 
-          alt="Image de présentation" 
-          width={1280}
-          height={1920}
-          className='img-fluid'
-          />
-        </div>
-        <div className="right-section">
-          <h2 className="title">Bienvenue</h2>
-          <p className="description">Connectez-vous à votre compte</p>
-          <form>
+    <>
+        <form onSubmit={handleSubmit}>
             <div className="input-group">
-              <label htmlFor="email">Email</label>
-              <input type="email" id="email" placeholder="Entrez votre email" />
+              <label htmlFor="email">Pseudo ou Email</label>
+              <input type="text" id="email" placeholder="Entrez votre email" onChange={(e)=>setEmail(e.target.value)}/>
             </div>
             <div className="input-group">
               <label htmlFor="password">Mot de passe</label>
-              <input type="password" id="password" placeholder="Entrez votre mot de passe" />
+              <input type="password" id="password" placeholder="Entrez votre mot de passe" onChange={(e)=>setPassword(e.target.value)}/>
             </div>
             <button type="submit">Se connecter</button>
           </form>
-        </div>
-      </div>
-    </div>
+    </>
   );
 };
 
