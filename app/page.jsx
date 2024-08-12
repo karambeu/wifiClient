@@ -1,7 +1,5 @@
-'use client'
 import LoginForm from "@/components/Login";
 import Image from "next/image";
-import { Suspense } from 'react'
 
 export default function Home() {
   return (
@@ -22,9 +20,7 @@ export default function Home() {
           <div className="right-section">
             <h2 className="title">Bienvenue</h2>
             <p className="description">Connectez-vous à votre compte</p>
-            <Suspense>
             <LoginForm/>
-            </Suspense>
           </div>
         </div>
       </div>
