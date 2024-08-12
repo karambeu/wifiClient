@@ -1,9 +1,8 @@
 'use client'
-import React,{useState,useEffect} from 'react'; 
-import { useRouter , useSearchParams} from 'next/navigation';
-import { toast } from 'react-toastify'
-import { signIn } from 'next-auth/react'
-
+import React, { useState, useEffect, Suspense } from 'react'; 
+import { useRouter, useSearchParams } from 'next/navigation';
+import { toast } from 'react-toastify';
+import { signIn } from 'next-auth/react';
 
 const LoginForm = () => {
     const [email, setEmail] = useState('');
@@ -18,6 +17,7 @@ const LoginForm = () => {
             router.replace('/');
         }
     }, [searchParams, router]);
+
     const handleSubmit = async (e) => {
         e.preventDefault();
         if (!email || !password) {
@@ -42,21 +42,22 @@ const LoginForm = () => {
             toast.error('Échec de la connexion. Veuillez réessayer.');
         }
     }
-  return (
-    <>
-        <form onSubmit={handleSubmit}>
-            <div className="input-group">
-              <label htmlFor="email">Pseudo ou Email</label>
-              <input type="text" id="email" placeholder="Entrez votre email" onChange={(e)=>setEmail(e.target.value)}/>
-            </div>
-            <div className="input-group">
-              <label htmlFor="password">Mot de passe</label>
-              <input type="password" id="password" placeholder="Entrez votre mot de passe" onChange={(e)=>setPassword(e.target.value)}/>
-            </div>
-            <button type="submit">Se connecter</button>
-          </form>
-    </>
-  );
+
+    return (
+        <Suspense fallback={<div>Chargement...</div>}>
+            <form onSubmit={handleSubmit}>
+                <div className="input-group">
+                    <label htmlFor="email">Pseudo ou Email</label>
+                    <input type="text" id="email" placeholder="Entrez votre email" onChange={(e) => setEmail(e.target.value)} />
+                </div>
+                <div className="input-group">
+                    <label htmlFor="password">Mot de passe</label>
+                    <input type="password" id="password" placeholder="Entrez votre mot de passe" onChange={(e) => setPassword(e.target.value)} />
+                </div>
+                <button type="submit">Se connecter</button>
+            </form>
+        </Suspense>
+    );
 };
 
 export default LoginForm;
