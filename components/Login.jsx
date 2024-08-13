@@ -1,6 +1,6 @@
 'use client'
-import React,{useState,useEffect} from 'react'; 
-import { useRouter , useSearchParams} from 'next/navigation';
+import React,{useState} from 'react'; 
+import { useRouter } from 'next/navigation';
 import { toast } from 'react-toastify'
 import { signIn } from 'next-auth/react'
 
@@ -9,15 +9,14 @@ const LoginForm = () => {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const router = useRouter();
-    const searchParams = useSearchParams();
 
-    useEffect(() => {
-        const message = searchParams.get('message');
-        if (message === 'signed-out') {
-            toast.info('Vous êtes déconnecté');
-            router.replace('/');
-        }
-    }, [searchParams, router]);
+    // useEffect(() => {
+    //     const message = searchParams.get('message');
+    //     if (message === 'signed-out') {
+    //         toast.info('Vous êtes déconnecté');
+    //         router.replace('/');
+    //     }
+    // }, [router]);
     const handleSubmit = async (e) => {
         e.preventDefault();
         if (!email || !password) {
